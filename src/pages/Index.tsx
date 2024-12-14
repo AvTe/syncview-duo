@@ -31,7 +31,7 @@ const Index = () => {
 
   const handleError = (error: string) => {
     toast({
-      title: "Error",
+      title: "Video Error",
       description: error,
       variant: "destructive",
     });
@@ -42,7 +42,9 @@ const Index = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold">SyncVid</h1>
-          <p className="text-lg text-muted-foreground">Play two videos at once</p>
+          <p className="text-lg text-muted-foreground">
+            Play two videos at once - supports YouTube and direct video URLs
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -51,7 +53,7 @@ const Index = () => {
               <div className="flex gap-2">
                 <Input
                   type="text"
-                  placeholder="Enter video URL"
+                  placeholder="Enter video URL (YouTube or direct video link)"
                   value={urls[index]}
                   onChange={(e) => handleUrlChange(index, e.target.value)}
                   className="flex-1 bg-background border-border"
