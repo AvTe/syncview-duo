@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [urls, setUrls] = useState(['', '']);
@@ -38,10 +38,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-foreground">SyncVid</h1>
+          <h1 className="text-4xl font-bold">SyncVid</h1>
           <p className="text-lg text-muted-foreground">Play two videos at once</p>
         </div>
 
@@ -54,11 +54,11 @@ const Index = () => {
                   placeholder="Enter video URL"
                   value={urls[index]}
                   onChange={(e) => handleUrlChange(index, e.target.value)}
-                  className="flex-1"
+                  className="flex-1 bg-background border-border"
                 />
                 <Button 
                   onClick={() => handlePlay(index)}
-                  className="bg-primary hover:bg-primary/90 text-white"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
                   Play
                 </Button>

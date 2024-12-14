@@ -18,7 +18,9 @@ const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.play();
+        videoRef.current.play().catch((error) => {
+          onError(`Failed to play video: ${error.message}`);
+        });
       }
       setIsPlaying(!isPlaying);
     }
@@ -56,7 +58,7 @@ const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
   }, [volume]);
 
   return (
-    <div className="rounded-lg overflow-hidden bg-secondary p-4 animate-fade-in">
+    <div className="rounded-lg overflow-hidden bg-background border border-border p-4 animate-fade-in">
       <div className="relative">
         <video
           ref={videoRef}
@@ -66,16 +68,16 @@ const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
         >
           Your browser does not support the video tag.
         </video>
-        <div className="absolute bottom-0 left-0 right-0 bg-muted bg-opacity-90 p-2 flex items-center gap-2">
+        <div className="absolute bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm p-2 flex items-center gap-2">
           <button
             onClick={togglePlay}
-            className="text-white hover:text-primary transition-colors"
+            className="text-foreground hover:text-primary transition-colors"
           >
             {isPlaying ? <Pause size={20} /> : <Play size={20} />}
           </button>
           <button
             onClick={toggleMute}
-            className="text-white hover:text-primary transition-colors"
+            className="text-foreground hover:text-primary transition-colors"
           >
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
@@ -86,11 +88,11 @@ const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
             step="0.1"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-24 h-1 bg-white rounded-lg appearance-none cursor-pointer"
+            className="w-24 h-1 bg-foreground/20 rounded-lg appearance-none cursor-pointer"
           />
           <button
             onClick={toggleFullscreen}
-            className="text-white hover:text-primary transition-colors ml-auto"
+            className="text-foreground hover:text-primary transition-colors ml-auto"
           >
             <Maximize size={20} />
           </button>
