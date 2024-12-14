@@ -70,6 +70,7 @@ const Index = () => {
                   url={activeVideos[index]}
                   title={`Video ${index + 1}`}
                   onError={handleError}
+                  index={index}
                 />
               )}
             </div>

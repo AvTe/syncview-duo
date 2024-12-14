@@ -1,14 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { getVideoUrl } from '../utils/videoUtils';
+import AudioEqualizer from './AudioEqualizer';
 
 interface VideoPlayerProps {
   url: string;
   title: string;
   onError: (error: string) => void;
+  index: number;
 }
 
-const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
+const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -117,6 +119,7 @@ const VideoPlayer = ({ url, title, onError }: VideoPlayerProps) => {
             onChange={handleVolumeChange}
             className="w-24 h-1 bg-foreground/20 rounded-lg appearance-none cursor-pointer"
           />
+          <AudioEqualizer videoIndex={index} />
           <button
             onClick={toggleFullscreen}
             className="text-foreground hover:text-primary transition-colors ml-auto"
