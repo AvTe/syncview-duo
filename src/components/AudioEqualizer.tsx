@@ -10,6 +10,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { audioProcessor } from '../services/audioProcessor';
 
 interface AudioEqualizerProps {
   videoIndex: number;
@@ -17,15 +18,17 @@ interface AudioEqualizerProps {
 
 const AudioEqualizer = ({ videoIndex }: AudioEqualizerProps) => {
   const handleBassChange = (value: number[]) => {
-    // Audio processing logic will be added here
+    audioProcessor.adjustBass(value[0]);
     console.log(`Bass changed for video ${videoIndex}:`, value[0]);
   };
 
   const handleTrebleChange = (value: number[]) => {
+    audioProcessor.adjustTreble(value[0]);
     console.log(`Treble changed for video ${videoIndex}:`, value[0]);
   };
 
   const handleEQChange = (frequency: string, value: number[]) => {
+    audioProcessor.adjustEQ(parseInt(frequency), value[0]);
     console.log(`EQ changed for video ${videoIndex} at ${frequency}Hz:`, value[0]);
   };
 

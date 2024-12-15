@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { getVideoUrl } from '../utils/videoUtils';
 import AudioEqualizer from './AudioEqualizer';
+import { createAudioNodes } from '../utils/audioContext';
+import { audioProcessor } from '../services/audioProcessor';
 
 interface VideoPlayerProps {
   url: string;
@@ -13,12 +15,12 @@ interface VideoPlayerProps {
 const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [isMuted, setIsMuted] = React.useState(false);
-  const [volume, setVolume] = React.useState(1);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isYouTube, setIsYouTube] = React.useState(false);
+  const [isYouTube, setIsYouTube] = useState(false);
 
   useEffect(() => {
     const processedUrl = getVideoUrl(url);
@@ -29,6 +31,14 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
     if (!isYouTube && videoRef.current) {
       const video = videoRef.current;
       
+      // Initialize audio nodes
+      try {
+        const nodes = createAudioNodes(video);
+        audioProcessor.setNodes(nodes);
+      } catch (error) {
+        console.error('Failed to initialize audio nodes:', error);
+      }
+
       const timeUpdate = () => {
         setCurrentTime(video.currentTime);
       };
