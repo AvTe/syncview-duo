@@ -3,20 +3,24 @@ import VideoPlayer from '../components/VideoPlayer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { Plus } from 'lucide-react';
 
 const Index = () => {
-  const [urls, setUrls] = useState(['', '']);
-  const [activeVideos, setActiveVideos] = useState(['', '']);
+  const [players, setPlayers] = useState([
+    { id: 0, url: '', active: false },
+    { id: 1, url: '', active: false }
+  ]);
   const { toast } = useToast();
 
-  const handleUrlChange = (index: number, value: string) => {
-    const newUrls = [...urls];
-    newUrls[index] = value;
-    setUrls(newUrls);
+  const handleUrlChange = (id: number, value: string) => {
+    setPlayers(players.map(player => 
+      player.id === id ? { ...player, url: value } : player
+    ));
   };
 
-  const handlePlay = (index: number) => {
-    if (!urls[index]) {
+  const handlePlay = (id: number) => {
+    const player = players.find(p => p.id === id);
+    if (!player?.url) {
       toast({
         title: "Error",
         description: "Please enter a valid video URL",
@@ -24,9 +28,9 @@ const Index = () => {
       });
       return;
     }
-    const newActiveVideos = [...activeVideos];
-    newActiveVideos[index] = urls[index];
-    setActiveVideos(newActiveVideos);
+    setPlayers(players.map(player => 
+      player.id === id ? { ...player, active: true } : player
+    ));
   };
 
   const handleError = (error: string) => {
@@ -37,44 +41,60 @@ const Index = () => {
     });
   };
 
+  const addPlayer = () => {
+    const newId = Math.max(...players.map(p => p.id)) + 1;
+    setPlayers([...players, { id: newId, url: '', active: false }]);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold">SyncVid</h1>
           <p className="text-lg text-muted-foreground">
-            Play two videos at once - supports YouTube and direct video URLs
+            Play multiple videos at once - supports YouTube and direct video URLs
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {[0, 1].map((index) => (
-            <div key={index} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {players.map((player) => (
+            <div key={player.id} className="space-y-4">
               <div className="flex gap-2">
                 <Input
                   type="text"
                   placeholder="Enter video URL (YouTube or direct video link)"
-                  value={urls[index]}
-                  onChange={(e) => handleUrlChange(index, e.target.value)}
+                  value={player.url}
+                  onChange={(e) => handleUrlChange(player.id, e.target.value)}
                   className="flex-1 bg-background border-border"
                 />
                 <Button 
-                  onClick={() => handlePlay(index)}
+                  onClick={() => handlePlay(player.id)}
                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
                   Play
                 </Button>
               </div>
-              {activeVideos[index] && (
+              {player.active && (
                 <VideoPlayer
-                  url={activeVideos[index]}
-                  title={`Video ${index + 1}`}
+                  url={player.url}
+                  title={`Video ${player.id + 1}`}
                   onError={handleError}
-                  index={index}
+                  index={player.id}
                 />
               )}
             </div>
           ))}
+        </div>
+
+        <div className="flex justify-center">
+          <Button
+            onClick={addPlayer}
+            variant="outline"
+            className="gap-2"
+          >
+            <Plus size={20} />
+            Add Player
+          </Button>
         </div>
       </div>
     </div>
