@@ -1,9 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { getVideoUrl } from '../utils/videoUtils';
-import AudioEqualizer from './AudioEqualizer';
-import { createAudioNodes } from '../utils/audioContext';
-import { audioProcessor } from '../services/audioProcessor';
 
 interface VideoPlayerProps {
   url: string;
@@ -30,14 +27,6 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
   useEffect(() => {
     if (!isYouTube && videoRef.current) {
       const video = videoRef.current;
-      
-      // Initialize audio nodes
-      try {
-        const nodes = createAudioNodes(video);
-        audioProcessor.setNodes(nodes);
-      } catch (error) {
-        console.error('Failed to initialize audio nodes:', error);
-      }
 
       const timeUpdate = () => {
         setCurrentTime(video.currentTime);
@@ -59,15 +48,12 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
 
   useEffect(() => {
     if (isYouTube) {
-      // Listen for YouTube player messages
       const handleMessage = (event: MessageEvent) => {
         try {
           const data = JSON.parse(event.data);
           if (data.event === 'onStateChange' && data.info === 1) {
-            // Video is playing
             setIsPlaying(true);
           } else if (data.event === 'onStateChange' && (data.info === 2 || data.info === 0)) {
-            // Video is paused or ended
             setIsPlaying(false);
           } else if (data.event === 'getDuration') {
             setDuration(data.info);
@@ -212,7 +198,6 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
             <span className="text-sm text-foreground/80">
               {formatTime(currentTime)} / {formatTime(duration || 0)}
             </span>
-            <AudioEqualizer videoIndex={index} />
             <button
               onClick={toggleFullscreen}
               className="text-foreground hover:text-primary transition-colors ml-auto"
