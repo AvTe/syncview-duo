@@ -31,16 +31,46 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
       
       const timeUpdate = () => {
         setCurrentTime(video.currentTime);
+      };
+
+      const loadedMetadata = () => {
         setDuration(video.duration);
       };
 
       video.addEventListener('timeupdate', timeUpdate);
-      video.addEventListener('loadedmetadata', timeUpdate);
+      video.addEventListener('loadedmetadata', loadedMetadata);
 
       return () => {
         video.removeEventListener('timeupdate', timeUpdate);
-        video.removeEventListener('loadedmetadata', timeUpdate);
+        video.removeEventListener('loadedmetadata', loadedMetadata);
       };
+    }
+  }, [isYouTube]);
+
+  useEffect(() => {
+    if (isYouTube) {
+      // Listen for YouTube player messages
+      const handleMessage = (event: MessageEvent) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.event === 'onStateChange' && data.info === 1) {
+            // Video is playing
+            setIsPlaying(true);
+          } else if (data.event === 'onStateChange' && (data.info === 2 || data.info === 0)) {
+            // Video is paused or ended
+            setIsPlaying(false);
+          } else if (data.event === 'getDuration') {
+            setDuration(data.info);
+          } else if (data.event === 'getCurrentTime') {
+            setCurrentTime(data.info);
+          }
+        } catch (e) {
+          // Ignore invalid messages
+        }
+      };
+
+      window.addEventListener('message', handleMessage);
+      return () => window.removeEventListener('message', handleMessage);
     }
   }, [isYouTube]);
 
@@ -88,6 +118,7 @@ const VideoPlayer = ({ url, title, onError, index }: VideoPlayerProps) => {
     if (isYouTube && iframeRef.current) {
       const message = `{"event":"command","func":"seekTo","args":[${time},true]}`;
       iframeRef.current.contentWindow?.postMessage(message, '*');
+      setCurrentTime(time);
     } else if (videoRef.current) {
       videoRef.current.currentTime = time;
       setCurrentTime(time);
