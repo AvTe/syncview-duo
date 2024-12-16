@@ -1,69 +1,66 @@
-# Welcome to your Lovable project
+# SyncVid - Multi Video Player
 
-## Project info
+SyncVid is a modern web application that allows users to play multiple videos simultaneously. Perfect for comparing videos, watching multiple streams, or analyzing content side by side.
 
-**URL**: https://lovable.dev/projects/3c522b84-f005-4d27-8b43-2a4ee06d61ec
+![SyncVid Demo](https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=1200&h=600&fit=crop)
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- Play multiple videos simultaneously
+- Support for YouTube videos and direct video URLs
+- Dynamic video player addition
+- Responsive design for all screen sizes
+- Simple and intuitive interface
+- Error handling with user-friendly notifications
 
-**Use Lovable**
+## 🚀 Live Demo
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3c522b84-f005-4d27-8b43-2a4ee06d61ec) and start prompting.
+Check out the live demo: [SyncVid Demo](https://lovable.dev/projects/3c522b84-f005-4d27-8b43-2a4ee06d61ec)
 
-Changes made via Lovable will be committed automatically to this repo.
+## 💻 Technologies Used
 
-**Use your preferred IDE**
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui components
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
+1. Clone the repository:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone <repository-url>
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install dependencies:
+```sh
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📱 Usage
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Enter a video URL (YouTube or direct video link) in the input field
+2. Click the "Play" button to start the video
+3. Add more video players by clicking the "Add Player" button
+4. Enjoy watching multiple videos simultaneously!
 
-**Use GitHub Codespaces**
+## 🎯 Use Cases
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- Compare video tutorials
+- Watch multiple sports streams
+- Analyze video content
+- Monitor multiple video feeds
+- Educational purposes
 
-## What technologies are used for this project?
+## 🤝 Contributing
 
-This project is built with .
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📄 License
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/3c522b84-f005-4d27-8b43-2a4ee06d61ec) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License - see the LICENSE file for details.
