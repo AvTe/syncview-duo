@@ -46,6 +46,14 @@ const Index = () => {
     setPlayers([...players, { id: newId, url: '', active: false }]);
   };
 
+  // Group players into pairs
+  const playerPairs = players.reduce<Array<typeof players>>((result, item, index) => {
+    if (index % 2 === 0) {
+      result.push(players.slice(index, index + 2));
+    }
+    return result;
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -56,45 +64,52 @@ const Index = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {players.map((player) => (
-            <div key={player.id} className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  placeholder="Enter video URL (YouTube or direct video link)"
-                  value={player.url}
-                  onChange={(e) => handleUrlChange(player.id, e.target.value)}
-                  className="flex-1 bg-background border-border"
-                />
-                <Button 
-                  onClick={() => handlePlay(player.id)}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
-                  Play
-                </Button>
+        <div className="space-y-8">
+          {playerPairs.map((pair, pairIndex) => (
+            <div key={pairIndex} className="space-y-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                {pair.map((player) => (
+                  <div key={player.id} className="space-y-4">
+                    <div className="flex gap-2">
+                      <Input
+                        type="text"
+                        placeholder="Enter video URL (YouTube or direct video link)"
+                        value={player.url}
+                        onChange={(e) => handleUrlChange(player.id, e.target.value)}
+                        className="flex-1 bg-background border-border"
+                      />
+                      <Button 
+                        onClick={() => handlePlay(player.id)}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      >
+                        Play
+                      </Button>
+                    </div>
+                    {player.active && (
+                      <VideoPlayer
+                        url={player.url}
+                        title={`Video ${player.id + 1}`}
+                        onError={handleError}
+                        index={player.id}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
-              {player.active && (
-                <VideoPlayer
-                  url={player.url}
-                  title={`Video ${player.id + 1}`}
-                  onError={handleError}
-                  index={player.id}
-                />
+              {pairIndex === playerPairs.length - 1 && (
+                <div className="flex justify-center">
+                  <Button
+                    onClick={addPlayer}
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <Plus size={20} />
+                    Add Player
+                  </Button>
+                </div>
               )}
             </div>
           ))}
-        </div>
-
-        <div className="flex justify-center">
-          <Button
-            onClick={addPlayer}
-            variant="outline"
-            className="gap-2"
-          >
-            <Plus size={20} />
-            Add Player
-          </Button>
         </div>
       </div>
     </div>
