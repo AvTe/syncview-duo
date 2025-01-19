@@ -72,7 +72,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background font-poppins">
       <div className="relative">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81')] bg-cover bg-center">
           <div className="absolute inset-0 bg-background/90 backdrop-blur-sm">
@@ -84,7 +84,7 @@ const Index = () => {
             <div className="backdrop-blur-md bg-blue-500/10 shadow-[0_0_50px_rgba(0,0,0,0.3)] rounded-2xl p-6 md:p-8 lg:p-12 border border-white/10 animate-fade-in">
               <div className="text-center mb-8 md:mb-12">
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">
+                  <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary font-bebas-neue tracking-wider">
                     SyncVid
                   </h1>
                   <Tooltip>
