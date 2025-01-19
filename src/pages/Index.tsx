@@ -58,23 +58,23 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 backdrop-blur-sm" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
+        <div className="relative w-full max-w-[95%] lg:max-w-7xl mx-auto px-4 py-8 md:py-16 lg:py-24">
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
               SyncVid
             </h1>
-            <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-3 md:mt-4 text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Play multiple videos at once - supports YouTube and direct video URLs. Perfect for comparing content or watching multiple streams simultaneously.
             </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-6 md:space-y-8">
             {playerPairs.map((pair, pairIndex) => (
-              <div key={pairIndex} className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-8">
+              <div key={pairIndex} className="space-y-6 md:space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
                   {pair.map((player) => (
-                    <div key={player.id} className="space-y-4">
-                      <div className="flex gap-2">
+                    <div key={player.id} className="space-y-3 md:space-y-4">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <Input
                           type="text"
                           placeholder="Enter video URL (YouTube or direct video link)"
@@ -84,7 +84,7 @@ const Index = () => {
                         />
                         <Button 
                           onClick={() => handlePlay(player.id)}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
                         >
                           Play
                         </Button>
@@ -101,7 +101,7 @@ const Index = () => {
                   ))}
                 </div>
                 {pairIndex === playerPairs.length - 1 && (
-                  <div className="flex justify-center">
+                  <div className="flex justify-center pt-4">
                     <Button
                       onClick={addPlayer}
                       variant="outline"
