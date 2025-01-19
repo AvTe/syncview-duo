@@ -3,7 +3,13 @@ import VideoPlayer from '../components/VideoPlayer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2, Info, HelpCircle } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Index = () => {
   const [players, setPlayers] = useState([
@@ -46,6 +52,18 @@ const Index = () => {
     setPlayers([...players, { id: newId, url: '', active: false }]);
   };
 
+  const removePlayer = (id: number) => {
+    if (players.length <= 2) {
+      toast({
+        title: "Cannot Remove",
+        description: "Minimum of two video players required",
+        variant: "destructive",
+      });
+      return;
+    }
+    setPlayers(players.filter(player => player.id !== id));
+  };
+
   const playerPairs = players.reduce<Array<typeof players>>((result, item, index) => {
     if (index % 2 === 0) {
       result.push(players.slice(index, index + 2));
@@ -55,16 +73,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section with Netflix-like background */}
       <div className="relative">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81')] bg-cover bg-center">
           <div className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
         </div>
         <div className="relative w-full max-w-[95%] lg:max-w-7xl mx-auto px-4 py-8 md:py-16 lg:py-24">
           <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">
-              SyncVid
-            </h1>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">
+                SyncVid
+              </h1>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircle className="w-6 h-6 text-muted-foreground hover:text-primary transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Watch multiple videos simultaneously</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
             <p className="mt-3 md:mt-4 text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Play multiple videos at once - supports YouTube and direct video URLs. Perfect for comparing content or watching multiple streams simultaneously.
             </p>
@@ -77,19 +104,46 @@ const Index = () => {
                   {pair.map((player) => (
                     <div key={player.id} className="space-y-3 md:space-y-4">
                       <div className="flex flex-col sm:flex-row gap-2">
-                        <Input
-                          type="text"
-                          placeholder="Enter video URL (YouTube or direct video link)"
-                          value={player.url}
-                          onChange={(e) => handleUrlChange(player.id, e.target.value)}
-                          className="flex-1 bg-secondary/60 backdrop-blur-sm border-muted"
-                        />
-                        <Button 
-                          onClick={() => handlePlay(player.id)}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
-                        >
-                          Play
-                        </Button>
+                        <div className="relative flex-1">
+                          <Input
+                            type="text"
+                            placeholder="Enter video URL (YouTube or direct video link)"
+                            value={player.url}
+                            onChange={(e) => handleUrlChange(player.id, e.target.value)}
+                            className="flex-1 bg-secondary/60 backdrop-blur-sm border-muted pr-10"
+                          />
+                          <Tooltip>
+                            <TooltipTrigger className="absolute right-3 top-1/2 -translate-y-1/2">
+                              <Info className="w-4 h-4 text-muted-foreground hover:text-primary transition-colors" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Paste YouTube URL or direct video link</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            onClick={() => handlePlay(player.id)}
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 sm:flex-none"
+                          >
+                            Play
+                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => removePlayer(player.id)}
+                                className="bg-secondary/60 border-muted hover:bg-secondary/80"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Remove video player</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                       </div>
                       {player.active && (
                         <VideoPlayer
@@ -104,14 +158,21 @@ const Index = () => {
                 </div>
                 {pairIndex === playerPairs.length - 1 && (
                   <div className="flex justify-center pt-4">
-                    <Button
-                      onClick={addPlayer}
-                      variant="outline"
-                      className="gap-2 bg-secondary/60 backdrop-blur-sm border-muted hover:bg-secondary/80"
-                    >
-                      <Plus size={20} />
-                      Add Player
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={addPlayer}
+                          variant="outline"
+                          className="gap-2 bg-secondary/60 backdrop-blur-sm border-muted hover:bg-secondary/80"
+                        >
+                          <Plus size={20} />
+                          Add Player
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Add another video player</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 )}
               </div>
