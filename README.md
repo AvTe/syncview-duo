@@ -13,10 +13,6 @@ SyncVid is a modern web application that allows users to play multiple videos si
 - Simple and intuitive interface
 - Error handling with user-friendly notifications
 
-## 🚀 Live Demo
-
-Check out the live demo: [SyncVid Demo](https://lovable.dev/projects/3c522b84-f005-4d27-8b43-2a4ee06d61ec)
-
 ## 💻 Technologies Used
 
 - React
